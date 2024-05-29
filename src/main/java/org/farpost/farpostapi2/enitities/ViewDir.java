@@ -17,20 +17,20 @@ public class ViewDir {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(name = "farpost_id")
-    private Integer farpost_id;
+    @Column(name = "farpost_id", nullable = false)
+    private Integer farpostId;
 
-    public ViewDir(String name, Integer farpost_id) {
+    public ViewDir(String name, Integer farpostId) {
         this.name = name;
-        this.farpost_id = farpost_id;
+        this.farpostId = farpostId;
     }
 
     public ViewDir(ViewDrCityDto viewDrCityDto) {
         this.name = viewDrCityDto.getName();
-        this.farpost_id = viewDrCityDto.getFarpostId();
+        this.farpostId = viewDrCityDto.getFarpostId();
     }
 
 }

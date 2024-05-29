@@ -9,7 +9,7 @@
     <appender name="FARPOST-LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${MAIN-LOG-FILE}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>farpost2.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>farpost2.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- each archived file, size max 10MB -->
             <maxFileSize>10MB</maxFileSize>
             <!-- total size of all archive files, if total size > 500MB, it will delete old archived file -->
@@ -24,7 +24,6 @@
         </encoder>
     </appender>
 
-<!--    <logger  name = "org.springframework.web"  level = "DEBUG" />-->
 
     <logger name="org.farpost.farpostapi2" level="DEBUG" additivity="true">
         <appender-ref ref="FARPOST-LOGS"/>

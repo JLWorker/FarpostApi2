@@ -17,10 +17,10 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column()
+    @Column(length = 250, nullable = false)
     private String name;
 
-    @Column(name = "farpost_id")
+    @Column(name = "farpost_id", nullable = false)
     private Integer farpostId;
 
     public City(String name, Integer farpost_id) {

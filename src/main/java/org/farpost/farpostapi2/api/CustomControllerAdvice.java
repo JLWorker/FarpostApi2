@@ -1,6 +1,7 @@
 package org.farpost.farpostapi2.api;
 
 
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationResponseDto;
@@ -29,5 +30,8 @@ public class CustomControllerAdvice {
         });
         return new ValidationResponseDto(exceptionDtos);
     }
+
+
+
 
 }

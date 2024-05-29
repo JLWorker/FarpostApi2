@@ -20,4 +20,8 @@ public class ViewDrCityDto {
     @NotNull(message = "Farpost id cannot be null")
     private Integer farpostId;
 
+    public ViewDrCityDto(String name, Integer farpostId) {
+        this.name = name;
+        this.farpostId = farpostId;
+    }
 }
