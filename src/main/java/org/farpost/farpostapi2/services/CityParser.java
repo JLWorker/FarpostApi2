@@ -11,6 +11,7 @@ import org.farpost.farpostapi2.exceptions.NodeNotFoundException;
 import org.farpost.farpostapi2.repositories.CityRepository;
 import org.farpost.farpostapi2.services.utils.ParserUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.net.MalformedURLException;

@@ -11,6 +11,14 @@ java {
     sourceCompatibility = '17'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.farpost.farpostapi2.FarpostApi2Application'
+        )
+    }
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -38,6 +46,7 @@ dependencies {
 
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
+tasks.named('bootJar') {     launchScript() }

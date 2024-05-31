@@ -1,13 +1,18 @@
 package org.farpost.farpostapi2.api;
 
 
-import jakarta.persistence.EntityManager;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.farpost.farpostapi2.dto.exceptions_dto.RemoteRequestExceptionDto;
+import org.farpost.farpostapi2.dto.exceptions_dto.SimpleResponseExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationResponseDto;
+import org.farpost.farpostapi2.exceptions.RemoteInvalidRequestException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.validation.BindException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,6 +36,18 @@ public class CustomControllerAdvice {
         return new ValidationResponseDto(exceptionDtos);
     }
 
+    @ExceptionHandler(value = RemoteInvalidRequestException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public RemoteRequestExceptionDto remoteRequestExceptionHandler(RemoteInvalidRequestException exception){
+        return new RemoteRequestExceptionDto(exception);
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public SimpleResponseExceptionDto remoteRequestExceptionHandler(ConstraintViolationException exception, HttpServletRequest request){
+        return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.CONFLICT.name(), HttpStatus.CONFLICT.value(),
+                exception.getMessage());
+    }
 
 
 

@@ -20,7 +20,7 @@ public class City {
     @Column(length = 250, nullable = false)
     private String name;
 
-    @Column(name = "farpost_id", nullable = false)
+    @Column(name = "farpost_id", nullable = false, unique = true)
     private Integer farpostId;
 
     public City(String name, Integer farpost_id) {

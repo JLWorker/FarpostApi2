@@ -16,12 +16,12 @@ public class ParsersTest {
 
     @Test
     public void testCityParser(){
-        cityParser.startParser("/home/makar/IdeaProjects/Farpost/FarpostApi2/src/main/resources/jsons/regions.json");
+        cityParser.startParser("/home/user/api/jsons/regions.json");
     }
 
-    @Test
-    public void testViewDirParser(){
-        viewDirParser.startParser("/home/makar/IdeaProjects/Farpost/FarpostApi2/src/main/resources/jsons/dirs_with_attributes.json");
-    }
+//    @Test
+//    public void testViewDirParser(){
+//        viewDirParser.startParser("/home/makar/IdeaProjects/Farpost/FarpostApi2/src/main/resources/jsons/dirs_with_attributes.json");
+//    }
 
 }

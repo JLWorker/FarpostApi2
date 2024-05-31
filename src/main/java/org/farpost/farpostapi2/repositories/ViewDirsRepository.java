@@ -13,17 +13,10 @@ import java.util.List;
 @Repository
 public interface ViewDirsRepository extends CrudRepository<ViewDir, Integer> {
 
-    @Transactional(readOnly = true)
     @Query(value = "SELECT viewDir FROM ViewDir viewDir")
     List<ViewDir> getAllViewDirs();
 
-    @Transactional
     @Query(value = "DELETE FROM view_dirs WHERE id =?1 RETURNING *", nativeQuery = true)
     ViewDir deleteViewDirById(Integer viewDirId);
-
-    @Transactional
-    @Query(value = "UPDATE view_dir SET farpost_id = ?1, name = ?2 WHERE id = ?3 RETURNING *", nativeQuery = true)
-    ViewDir updateViewDirById(Integer farpostId, String name, Integer id);
-
 
 }
