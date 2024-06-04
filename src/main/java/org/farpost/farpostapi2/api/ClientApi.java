@@ -1,5 +1,6 @@
 package org.farpost.farpostapi2.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.farpost.farpostapi2.dto.client_dto.ClientDto;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Authentication")
 public class ClientApi {
 
     private final ClientFacade clientFacade;
@@ -28,13 +30,13 @@ public class ClientApi {
     }
 
     @PutMapping("/{client_id}")
-    public Client updateClient(@PathVariable(value = "client_id") Integer clientId, @Valid @RequestBody ClientDto clientDto){
-        return clientFacade.updateClient(clientId, clientDto);
+    public void updateClient(@PathVariable(value = "client_id") Integer clientId, @Valid @RequestBody ClientDto clientDto){
+         clientFacade.updateClient(clientId, clientDto);
     }
 
     @DeleteMapping("/{client_id}")
-    public Client deleteClient(@PathVariable(value = "client_id") Integer clientId){
-        return clientFacade.deleteClient(clientId);
+    public void deleteClient(@PathVariable(value = "client_id") Integer clientId){
+         clientFacade.deleteClient(clientId);
     }
 
 

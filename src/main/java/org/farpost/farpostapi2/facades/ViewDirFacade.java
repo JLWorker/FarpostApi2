@@ -29,13 +29,13 @@ public class ViewDirFacade {
 
     @Transactional
     public ViewDir deleteViewDir(Integer cityId){
-        facadeUtils.checkAvailability(cityId, City.class);
+        facadeUtils.checkAvailability(cityId, City.class, true);
         return viewDirsRepository.deleteViewDirById(cityId);
     }
 
-    @Transactional()
+    @Transactional
     public ViewDir updateViewDir(Integer viewDirId, ViewDrCityDto viewDrCityDto){
-        ViewDir viewDir = facadeUtils.checkAvailability(viewDirId, ViewDir.class);
+        ViewDir viewDir = facadeUtils.checkAvailability(viewDirId, ViewDir.class, true);
         viewDir.setName(viewDrCityDto.getName());
         viewDir.setFarpostId(viewDrCityDto.getFarpostId());
         return viewDirsRepository.save(viewDir);

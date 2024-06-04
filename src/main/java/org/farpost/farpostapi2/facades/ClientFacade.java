@@ -6,6 +6,7 @@ import org.farpost.farpostapi2.dto.client_dto.ClientDto;
 import org.farpost.farpostapi2.enitities.Client;
 import org.farpost.farpostapi2.enitities.ClientTg;
 import org.farpost.farpostapi2.enitities.Vps;
+import org.farpost.farpostapi2.exceptions.system.ElementNotFoundException;
 import org.farpost.farpostapi2.facades.utils.FacadeUtils;
 import org.farpost.farpostapi2.repositories.ClientRepository;
 import org.farpost.farpostapi2.repositories.ClientTgRepository;
@@ -29,7 +30,7 @@ public class ClientFacade {
     public Client addNewClient(ClientDto clientDto){
         Client client = new Client(clientDto);
         if (clientDto.getVpsId() != null) {
-            Vps vps = facadeUtils.checkAvailability(clientDto.getVpsId(), Vps.class);
+            Vps vps = facadeUtils.checkAvailability(clientDto.getVpsId(), Vps.class, false);
             client.setVps(vps);
         }
         return clientRepository.save(client);
@@ -41,16 +42,16 @@ public class ClientFacade {
     }
 
     @Transactional
-    public Client updateClient(Integer clientId, ClientDto clientDto){
-        Client client = facadeUtils.checkAvailability(clientId, Client.class);
+    public void updateClient(Integer clientId, ClientDto clientDto){
+        Client client = getBlockForClientCascade(clientId);
         client.setName(clientDto.getName());
         client.setBoobs(clientDto.getBoobs());
         if (clientDto.getVpsId() != null) {
-            Vps vps = facadeUtils.checkAvailability(clientDto.getVpsId(), Vps.class);
+            Vps vps = facadeUtils.checkAvailability(clientDto.getVpsId(), Vps.class, false);
             client.setVps(vps);
         }
         if(!clientDto.getListTgId().isEmpty()){
-            Map<Integer, ClientTg> clientTgMap = clientTgRepository.getClientTgsByClientId(clientId)
+            Map<Integer, ClientTg> clientTgMap = client.getClientTgs()
                     .stream().collect(Collectors.toMap(ClientTg::getTgId, value -> value));
             clientDto.getListTgId().forEach(el -> {
                 ClientTg clientTg = new ClientTg(el);
@@ -68,14 +69,18 @@ public class ClientFacade {
                 }
             });
         }
-        return clientRepository.getClientById(clientId);
     }
 
     @Transactional
-    public Client deleteClient(Integer clientId){
-        Client client = facadeUtils.checkAvailability(clientId, Client.class);
-        clientRepository.deleteClientById(clientId);
-        return client;
+    public void deleteClient(Integer clientId){
+            getBlockForClientCascade(clientId);
+            clientRepository.deleteClientById(clientId);
+    }
+
+    private Client getBlockForClientCascade(Integer clientId){
+        return clientRepository.getClientWithTgById(clientId).orElseThrow(() ->
+                new ElementNotFoundException(clientId)
+        );
     }
 
 }

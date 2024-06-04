@@ -1,7 +1,8 @@
 package org.farpost.farpostapi2.services.utils;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.farpost.farpostapi2.exceptions.RemoteInvalidRequestException;
+import org.farpost.farpostapi2.exceptions.system.RemoteInvalidRequestException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -16,10 +17,7 @@ import java.nio.charset.StandardCharsets;
 public class RestResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
-        byte [] allBytes = response.getBody().readAllBytes();
-        log.info(new String(allBytes, StandardCharsets.UTF_8));
-        log.info(response.getStatusText() + response.getStatusCode().value());
-       return response.getStatusCode().isError();
+        return response.getStatusCode().isError();
     }
 
     @Override
@@ -27,9 +25,10 @@ public class RestResponseErrorHandler implements ResponseErrorHandler {
 
     }
     @Override
-    public void handleError(URI uri, HttpMethod method, ClientHttpResponse response) throws IOException {
-        log.error("Problem executing a remote request by uri {}", uri);
-        throw new RemoteInvalidRequestException("Problem executing a remote request by uri", uri.getPath(), response.getStatusCode().value(),
+    @SneakyThrows
+    public void handleError(URI uri, HttpMethod method, ClientHttpResponse response) {
+        log.error(String.format("Problem executing a remote request by uri %s", uri.getRawPath()));
+        throw new RemoteInvalidRequestException(String.format("Problem executing a remote request by uri", uri.getPath()), uri.getPath(), response.getStatusCode().value(),
                 method.name());
     }
 

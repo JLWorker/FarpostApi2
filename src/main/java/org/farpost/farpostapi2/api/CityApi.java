@@ -1,5 +1,6 @@
 package org.farpost.farpostapi2.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/city")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Authentication")
 @Slf4j
 public class CityApi {
 
@@ -30,19 +32,18 @@ public class CityApi {
     }
 
     @PostMapping("/add")
-    @Transactional
     public City addNewCity(@Valid @RequestBody ViewDrCityDto viewDrCityDto){
         return cityFacade.addCity(viewDrCityDto);
     }
 
     @DeleteMapping("/{city_id}")
-    public City deleteCity(@PathVariable("city_id") Integer cityId){
-        return cityFacade.deleteCity(cityId);
+    public void deleteCity(@PathVariable("city_id") Integer cityId){
+        cityFacade.deleteCity(cityId);
     }
 
     @PutMapping("/{city_id}")
-    public City updateCity(@PathVariable("city_id") Integer cityId, @Valid @RequestBody ViewDrCityDto viewDrCityDto){
-        return cityFacade.updateCity(cityId, viewDrCityDto);
+    public void updateCity(@PathVariable("city_id") Integer cityId, @Valid @RequestBody ViewDrCityDto viewDrCityDto){
+        cityFacade.updateCity(cityId, viewDrCityDto);
     }
 
 

@@ -1,11 +1,10 @@
-package org.farpost.farpostapi2.exceptions;
+package org.farpost.farpostapi2.exceptions.system;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
 public class ElementNotFoundException extends RuntimeException{
-    public ElementNotFoundException(String message) {
-        super(message);
+    public ElementNotFoundException(Integer elemId) {
+        super(String.format("Element with id %s - not found", elemId));
     }
 }

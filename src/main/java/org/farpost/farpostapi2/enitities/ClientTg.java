@@ -1,14 +1,11 @@
 package org.farpost.farpostapi2.enitities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.farpost.farpostapi2.dto.client_dto.ClientTelegramDto;
+import org.farpost.farpostapi2.dto.client_dto.ClientTgDto;
 
 import java.util.Objects;
 
@@ -24,7 +21,7 @@ public class ClientTg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "tg_id", nullable = false, unique = true)
     private Integer tgId;
 
     @Column(length = 150, nullable = false)
@@ -35,9 +32,15 @@ public class ClientTg {
     @JsonBackReference
     private Client client;
 
-    public ClientTg(ClientTelegramDto clientTelegramDto) {
-        this.tgId = clientTelegramDto.getTgId();
-        this.username = clientTelegramDto.getUsername();
+    public ClientTg(ClientTgDto clientTgDto) {
+        this.tgId = clientTgDto.getTgId();
+        this.username = clientTgDto.getUsername();
+    }
+
+    public ClientTg(ClientTgDto clientTgDto, Client client) {
+        this.tgId = clientTgDto.getTgId();
+        this.username = clientTgDto.getUsername();
+        this.client = client;
     }
 
     @Override

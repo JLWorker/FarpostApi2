@@ -2,11 +2,10 @@ package org.farpost.farpostapi2.dto.exceptions_dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.farpost.farpostapi2.exceptions.RemoteInvalidRequestException;
+import org.farpost.farpostapi2.exceptions.system.RemoteInvalidRequestException;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
@@ -30,7 +29,7 @@ public class RemoteRequestExceptionDto {
         this.httpMethod = remoteInvalidRequestException.getHttpMethod();
         this.uri = remoteInvalidRequestException.getUri();
         this.message = remoteInvalidRequestException.getMessage();
-        this.classPath = remoteInvalidRequestException.getCause().getClass().getName();
+        this.classPath = remoteInvalidRequestException.getClass().getName();
     }
 
 }

@@ -1,4 +1,4 @@
-package org.farpost.farpostapi2.exceptions;
+package org.farpost.farpostapi2.exceptions.system;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 
 @Getter
-public class RemoteInvalidRequestException extends IOException {
+public class RemoteInvalidRequestException extends RuntimeException {
 
     private final String uri;
     private final Integer httpStatus;

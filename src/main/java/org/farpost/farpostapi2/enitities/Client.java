@@ -1,5 +1,6 @@
 package org.farpost.farpostapi2.enitities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Client {
 
     @ManyToOne
     @JoinColumn(name = "vps_id")
+    @JsonBackReference
     private Vps vps;
 
     public Client(ClientDto clientDto) {

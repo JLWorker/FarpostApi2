@@ -1,21 +1,15 @@
 package org.farpost.farpostapi2.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.farpost.farpostapi2.enitities.City;
-import org.farpost.farpostapi2.exceptions.NodeNotFoundException;
 import org.farpost.farpostapi2.repositories.CityRepository;
 import org.farpost.farpostapi2.services.utils.ParserUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

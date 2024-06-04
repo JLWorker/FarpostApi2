@@ -1,5 +1,6 @@
 package org.farpost.farpostapi2.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.farpost.farpostapi2.dto.city_viewdir_dto.ViewDrCityDto;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/view_dir")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Authentication")
 public class ViewDirApi {
 
     private final ViewDirFacade viewDirFacade;
@@ -28,13 +30,13 @@ public class ViewDirApi {
     }
 
     @DeleteMapping("/{view_dir_id}")
-    public ViewDir deleteViewDir(@PathVariable("view_dir_id") Integer viewDirId){
-        return viewDirFacade.deleteViewDir(viewDirId);
+    public void deleteViewDir(@PathVariable("view_dir_id") Integer viewDirId){
+        viewDirFacade.deleteViewDir(viewDirId);
     }
 
     @PutMapping("/{view_dir_id}")
-    public ViewDir updateViewDir(@PathVariable("view_dir_id") Integer viewDirId, @Valid @RequestBody ViewDrCityDto viewDrCityDto){
-        return viewDirFacade.updateViewDir(viewDirId, viewDrCityDto);
+    public void updateViewDir(@PathVariable("view_dir_id") Integer viewDirId, @Valid @RequestBody ViewDrCityDto viewDrCityDto){
+        viewDirFacade.updateViewDir(viewDirId, viewDrCityDto);
     }
 
 }

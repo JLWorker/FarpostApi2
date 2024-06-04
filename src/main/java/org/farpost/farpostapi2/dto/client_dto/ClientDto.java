@@ -1,8 +1,8 @@
 package org.farpost.farpostapi2.dto.client_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -29,8 +28,12 @@ public class ClientDto {
 
     private Integer vpsId;
 
-    @NotNull(message = "List with telegram cannot be null")
     @Valid
-    private List<ClientTelegramDto> listTgId;
+    @JsonProperty("client_vps")
+    private ClientVpsDto clientVpsDto;
+
+    @Valid
+    @JsonProperty("client_tgs")
+    private List<ClientTgDto> listTgId;
 
 }

@@ -1,5 +1,6 @@
 package org.farpost.farpostapi2.enitities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,16 +26,15 @@ public class Vps {
     @Column(length = 40, nullable = false)
     private String ip;
 
-    @Column(length = 100, nullable = false)
-    private String os;
+    @Column(nullable = false, length = 300, unique = true)
+    private String ring;
 
     @OneToMany(mappedBy = "vps", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Client> clients;
 
     @OneToMany(mappedBy = "vps", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bot> bots;
-
-
 
 
 }

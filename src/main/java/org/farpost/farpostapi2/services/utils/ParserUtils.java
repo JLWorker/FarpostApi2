@@ -2,7 +2,7 @@ package org.farpost.farpostapi2.services.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
-import org.farpost.farpostapi2.exceptions.NodeNotFoundException;
+import org.farpost.farpostapi2.exceptions.system.NodeNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component

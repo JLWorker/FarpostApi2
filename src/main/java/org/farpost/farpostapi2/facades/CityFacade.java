@@ -39,17 +39,17 @@ public class CityFacade {
     }
 
     @Transactional
-    public City deleteCity(Integer cityId){
-        facadeUtils.checkAvailability(cityId, City.class);
-        return cityRepository.deleteCityById(cityId);
+    public void deleteCity(Integer cityId){
+        facadeUtils.checkAvailability(cityId, City.class, true);
+        cityRepository.deleteCityById(cityId);
     }
 
     @Transactional
-    public City updateCity(Integer cityId, ViewDrCityDto viewDrCityDto){
-        City city = facadeUtils.checkAvailability(cityId, City.class);
+    public void updateCity(Integer cityId, ViewDrCityDto viewDrCityDto){
+        City city = facadeUtils.checkAvailability(cityId, City.class, true);
         city.setName(viewDrCityDto.getName());
         city.setFarpostId(viewDrCityDto.getFarpostId());
-        return cityRepository.save(city);
+        cityRepository.save(city);
     }
 
 
