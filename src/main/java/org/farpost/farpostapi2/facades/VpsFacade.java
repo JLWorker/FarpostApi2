@@ -1,6 +1,7 @@
 package org.farpost.farpostapi2.facades;
 
 import lombok.RequiredArgsConstructor;
+import org.farpost.farpostapi2.dto.vps_dto.UpdateVpsDto;
 import org.farpost.farpostapi2.dto.vps_dto.VpsDto;
 import org.farpost.farpostapi2.enitities.Vps;
 import org.farpost.farpostapi2.exceptions.system.ElementNotFoundException;
@@ -34,23 +35,22 @@ public class VpsFacade {
     }
 
     @Transactional(readOnly = true)
-    public void updateVps(Integer vpsId, VpsDto vpsDto){
+    public List<VpsDto> getAllVps(){
+        return vpsRepository.getAllVps().stream().map(VpsDto::new).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public void updateVps(Integer vpsId, UpdateVpsDto updateVpsDto){
         Vps vps = facadeUtils.checkAvailability(vpsId, Vps.class, true);
-        vps.setIp(vpsDto.getIp());
-        vps.setRing(vpsDto.getRing());
-        vps.setTimewebId(vpsDto.getTimewebId());
-        vps.setName(vpsDto.getName());
+        vps.setRing(updateVpsDto.getRing());
         vpsRepository.save(vps);
     }
 
     @Transactional
     public void deleteVps(Integer vpsId){
-        Optional<Vps> vps = vpsRepository.getVpsCascadeLockById(vpsId);
-        if (vps.isPresent()){
-            deleteVps(vpsId);
-        }
-        else
-            throw new ElementNotFoundException(vpsId);
+        Vps vps = vpsRepository.getVpsCascadeLockById(vpsId)
+                .orElseThrow(() -> new ElementNotFoundException(vpsId));
+        vpsRepository.delete(vps);
     }
 
 }

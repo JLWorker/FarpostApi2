@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,25 +16,40 @@ import org.farpost.farpostapi2.dto.client_dto.ClientDto;
 import org.farpost.farpostapi2.dto.client_dto.ClientTgDto;
 import org.farpost.farpostapi2.enitities.Bot;
 import org.farpost.farpostapi2.enitities.Client;
+import org.farpost.farpostapi2.enitities.Vps;
 
 import java.util.List;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @AllArgsConstructor
 public class VpsDto {
 
-    @NotNull(message = "Name cannot be null")
-    @Pattern(regexp = "^[a-zA-Zа-яА-Я\\s]{3,50}$", message = "Invalid name parameter")
-    private String name;
-
-    @NotEmpty(message = "Ring cannot be empty")
-    private String ring;
-
-    @Pattern(regexp = "^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}$")
-    private String ip;
+    private Integer id;
 
     private Integer timewebId;
+
+    private String name;
+
+    private String ipv4;
+
+    private String ipv6;
+
+    private String ring;
+
+    private List<ShortClientDto> clients;
+
+    private List<ShortBotDto> bots;
+
+    public VpsDto(Vps vps){
+        this.id = vps.getId();
+        this.name = vps.getName();
+        this.timewebId = vps.getTimewebId();
+        this.ipv4 = vps.getIpv4();
+        this.ipv6 = vps.getIpv6();
+        this.ring = vps.getRing();
+        this.clients = vps.getClients().stream().map(ShortClientDto::new).toList();
+        this.bots = vps.getBots().stream().map(ShortBotDto::new).toList();
+    }
 
 }

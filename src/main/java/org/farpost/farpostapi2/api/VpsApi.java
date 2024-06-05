@@ -3,10 +3,8 @@ package org.farpost.farpostapi2.api;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.farpost.farpostapi2.dto.vps_dto.LocationDto;
-import org.farpost.farpostapi2.dto.vps_dto.OsDto;
-import org.farpost.farpostapi2.dto.vps_dto.PresetDto;
-import org.farpost.farpostapi2.dto.vps_dto.VpsDto;
+import org.farpost.farpostapi2.dto.vps_dto.*;
+import org.farpost.farpostapi2.enitities.Vps;
 import org.farpost.farpostapi2.facades.VpsFacade;
 import org.farpost.farpostapi2.facades.utils.TimewebRequests;
 import org.farpost.farpostapi2.services.utils.FiledParseName;
@@ -38,8 +36,13 @@ public class VpsApi {
     }
 
     @PutMapping("/{vps_id}")
-    public void updateVps(@PathVariable("vps_id") Integer vpsId, @RequestBody @Valid VpsDto vpsDto){
-         vpsFacade.updateVps(vpsId, vpsDto);
+    public void updateVps(@PathVariable("vps_id") Integer vpsId, @RequestBody @Valid UpdateVpsDto updateVpsDto){
+         vpsFacade.updateVps(vpsId, updateVpsDto);
+    }
+
+    @GetMapping()
+    public List<VpsDto> getAllVps(){;
+        return vpsFacade.getAllVps();
     }
 
     @DeleteMapping("/{vps_id}")
@@ -47,24 +50,5 @@ public class VpsApi {
         vpsFacade.deleteVps(vpsId);
     }
 
-//    @GetMapping
-//    public List<Vps> getAllVps(){;
-//        return vpsFacade.getVps();
-//    }
-//
-//    @PostMapping()
-//    public Vps addNewVps(@Valid @RequestBody ViewDrCityDto viewDrCityDto){
-//        return cityFacade.addCity(viewDrCityDto);
-//    }
-//
-//    @DeleteMapping("/{city_id}")
-//    public void deleteCity(@PathVariable("city_id") Integer cityId){
-//        cityFacade.deleteCity(cityId);
-//    }
-//
-//    @PutMapping("/{city_id}")
-//    public void updateCity(@PathVariable("city_id") Integer cityId, @Valid @RequestBody ViewDrCityDto viewDrCityDto){
-//        cityFacade.updateCity(cityId, viewDrCityDto);
-//    }
 
 }

@@ -8,9 +8,7 @@ import org.farpost.farpostapi2.dto.exceptions_dto.ValidationExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationResponseDto;
 import org.farpost.farpostapi2.exceptions.security.BadAuthSwaggerRequestException;
 import org.farpost.farpostapi2.exceptions.security.SwaggerAccessExpiredException;
-import org.farpost.farpostapi2.exceptions.system.ElementNotFoundException;
-import org.farpost.farpostapi2.exceptions.system.NodeNotFoundException;
-import org.farpost.farpostapi2.exceptions.system.RemoteInvalidRequestException;
+import org.farpost.farpostapi2.exceptions.system.*;
 import org.farpost.farpostapi2.exceptions.users.InvalidUserCredentials;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -64,6 +62,20 @@ public class CustomControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public SimpleResponseExceptionDto elemNotFoundExceptionHandler(ElementNotFoundException exception, HttpServletRequest request){
         return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
+                exception.getMessage());
+    }
+
+    @ExceptionHandler(value = BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public SimpleResponseExceptionDto elemNotFoundExceptionHandler(BadRequestException exception, HttpServletRequest request){
+        return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage());
+    }
+
+    @ExceptionHandler(value = ElementAlreadyExist.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public SimpleResponseExceptionDto elemAlreadyExistExceptionHandler(ElementAlreadyExist exception, HttpServletRequest request){
+        return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
                 exception.getMessage());
     }
 

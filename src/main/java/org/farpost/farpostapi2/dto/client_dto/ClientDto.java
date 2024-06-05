@@ -24,6 +24,7 @@ public class ClientDto {
     private String name;
 
     @NotEmpty(message = "Boobs cannot be empty")
+    @NotNull(message = "Boobs cannot be null")
     private String boobs;
 
     private Integer vpsId;

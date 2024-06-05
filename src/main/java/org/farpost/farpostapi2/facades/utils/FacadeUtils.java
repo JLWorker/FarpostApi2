@@ -26,6 +26,7 @@ public class FacadeUtils {
             throw new ElementNotFoundException(elemId);
    }
 
+
     public String getUserBoobs(Integer clientId){
         Client client = clientRepository.getClientById(clientId);
         if (client!=null)

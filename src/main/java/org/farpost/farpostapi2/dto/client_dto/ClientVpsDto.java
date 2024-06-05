@@ -27,7 +27,7 @@ public class ClientVpsDto {
     private String availabilityZone;
 
     @NotNull(message = "Vps name cannot be null")
-    @Pattern(regexp = "^[a-zA-Zа-яА-Я\\s]{3,50}$", message = "Invalid name parameter")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я\\d\\s]{3,50}$", message = "Invalid name parameter")
     private String vpsName;
 
 }

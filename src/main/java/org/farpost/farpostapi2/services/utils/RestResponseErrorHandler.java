@@ -28,7 +28,8 @@ public class RestResponseErrorHandler implements ResponseErrorHandler {
     @SneakyThrows
     public void handleError(URI uri, HttpMethod method, ClientHttpResponse response) {
         log.error(String.format("Problem executing a remote request by uri %s", uri.getRawPath()));
-        throw new RemoteInvalidRequestException(String.format("Problem executing a remote request by uri", uri.getPath()), uri.getPath(), response.getStatusCode().value(),
+        String responseBody = new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
+        throw new RemoteInvalidRequestException(String.format("Problem executing a remote request, message - %s", responseBody), uri.getPath(), response.getStatusCode().value(),
                 method.name());
     }
 

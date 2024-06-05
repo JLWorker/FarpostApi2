@@ -20,8 +20,8 @@ public class ClientApi {
     private final ClientFacade clientFacade;
 
     @PostMapping
-    public Client addNewClient(@Valid @RequestBody ClientDto clientDto){
-        return clientFacade.addNewClient(clientDto);
+    public void addNewClient(@Valid @RequestBody ClientDto clientDto){
+        clientFacade.addNewClient(clientDto);
     }
 
     @GetMapping

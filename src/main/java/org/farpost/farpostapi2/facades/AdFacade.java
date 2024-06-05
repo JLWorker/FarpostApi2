@@ -26,10 +26,8 @@ public class AdFacade {
                 RequestVariables.AD_VIEW_DIR.getName(), adDto.getViewDirId(),
                 RequestVariables.AD_PRICE.getName(), adDto.getPrice()
         );
-        restService.sendGetRequestSimple(FarpostRequests.UP_AD, variables , headers -> {
-            headers.add(HttpHeaders.COOKIE, boobs);
-            headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=windows-1251");
-        }, String.class);
+        restService.sendGetRequestSimple(FarpostRequests.UP_AD, variables , headers ->
+            headers.add(HttpHeaders.COOKIE, boobs), String.class);
         return new AdResponseDto(adDto.getAdId(), "up");
     }
 
@@ -38,7 +36,6 @@ public class AdFacade {
         Map<String, Object> variables = Map.of(RequestVariables.AD_ID.getName(), adDto.getAdId());
         restService.sendGetRequestSimple(FarpostRequests.UNPIN_AD, variables , headers -> {
             headers.add(HttpHeaders.COOKIE, boobs);
-            headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=windows-1251");
         }, String.class);
         return new AdResponseDto(adDto.getAdId(), "unpin");
     }
