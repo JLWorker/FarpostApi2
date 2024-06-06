@@ -12,10 +12,10 @@ import org.farpost.farpostapi2.dto.client_dto.ClientVpsDto;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Setter
 @NoArgsConstructor
-public class CreateVpsDto {
+public class TimewebVpsDto {
 
     private Integer presetId;
-    private Integer osId;
+    private String imageId;
     @JsonProperty(value = "is_ddos_guard")
     private boolean isDdosGuard;
     private String name;
@@ -24,12 +24,12 @@ public class CreateVpsDto {
     private String availabilityZone;
     private String cloudInit;
 
-    public CreateVpsDto(ClientVpsDto clientVpsDto){
-        this.osId = clientVpsDto.getOsId();
+    public TimewebVpsDto(ClientVpsDto clientVpsDto){
         this.name = clientVpsDto.getVpsName();
         this.isDdosGuard = clientVpsDto.isDdosGuard();
         this.presetId = clientVpsDto.getPresetId();
         this.availabilityZone = clientVpsDto.getAvailabilityZone();
+        this.imageId = clientVpsDto.getImageId();
         this.avatarId = "avatar";
         this.comment = "comment";
         this.cloudInit = "#cloud-config";

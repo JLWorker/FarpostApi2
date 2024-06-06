@@ -16,8 +16,8 @@ public class ClientVpsDto {
     @NotNull(message = "Preset cannot be null")
     private Integer presetId;
 
-    @NotNull(message = "Os id cannot be null")
-    private Integer osId;
+    @NotNull(message = "Image id cannot be bull")
+    private String imageId;
 
     @NotNull(message = "DdosGuard cannot be null")
     private boolean isDdosGuard;

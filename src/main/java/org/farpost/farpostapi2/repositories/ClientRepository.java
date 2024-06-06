@@ -26,6 +26,8 @@ public interface ClientRepository extends CrudRepository<Client, Integer> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Client> getClientWithTgById(Integer id);
 
+    Optional<Client> findClientByBoobs(String boobs);
+
     void deleteClientById(Integer id);
 
 }

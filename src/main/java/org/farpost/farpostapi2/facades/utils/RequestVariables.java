@@ -9,7 +9,8 @@ public enum RequestVariables {
 
     AD_ID("ad_id"),
     AD_VIEW_DIR("view_dir"),
-    AD_PRICE("price");
+    AD_PRICE("price"),
+    TIMEWEB_ID("timeweb_id");
     
 
     private final String name;

@@ -36,14 +36,18 @@ public class Client {
     @JsonBackReference
     private Vps vps;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
+    @JsonManagedReference
+    private List<Ad> ads;
+
     public Client(ClientDto clientDto) {
         this.name = clientDto.getName();
         this.boobs = clientDto.getBoobs();
-        this.clientTgs = clientDto.getListTgId().stream().map(el -> {
-            ClientTg clientTg = new ClientTg(el);
-            clientTg.setClient(this);
-            return clientTg;
-        }).toList();
+//        this.clientTgs = clientDto.getListTgId().stream().map(el -> {
+//            ClientTg clientTg = new ClientTg(el);
+//            clientTg.setClient(this);
+//            return clientTg;
+//        }).toList();
     }
 
 }

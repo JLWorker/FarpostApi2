@@ -1,7 +1,6 @@
-package org.farpost.farpostapi2.dto.ad_dto;
+package org.farpost.farpostapi2.dto.farpost_ad_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +11,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Setter
 @Getter
-public class AdDto {
+public class FarpostAdDto {
 
     @NotNull(message = "Ad id cannot be null")
     private Integer adId;

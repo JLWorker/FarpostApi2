@@ -33,8 +33,8 @@ public class ClientDto {
     @JsonProperty("client_vps")
     private ClientVpsDto clientVpsDto;
 
-    @Valid
-    @JsonProperty("client_tgs")
-    private List<ClientTgDto> listTgId;
+//    @Valid
+//    @JsonProperty("client_tgs")
+//    private List<ClientTgDto> listTgId;
 
 }

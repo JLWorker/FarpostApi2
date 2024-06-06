@@ -3,14 +3,14 @@ package org.farpost.farpostapi2.dto.timeweb_dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
-@Setter
-public class CreateVpsResponseDto {
+@AllArgsConstructor
+public class TimewebIpDto {
 
-    private Integer vpsTimewebId;
-    private String ipv6;
-    private String ipv4;
+    private String type;
+
 }

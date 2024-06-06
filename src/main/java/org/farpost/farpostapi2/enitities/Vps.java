@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.farpost.farpostapi2.dto.timeweb_dto.CreateVpsResponseDto;
+import org.farpost.farpostapi2.dto.timeweb_dto.TimewebVpsResponseDto;
 
 import java.util.List;
 
@@ -42,11 +42,11 @@ public class Vps {
     @OneToMany(mappedBy = "vps", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bot> bots;
 
-    public Vps(String name, CreateVpsResponseDto createVpsResponseDto) {
-        this.timewebId = createVpsResponseDto.getVpsTimewebId();
+    public Vps(String name, TimewebVpsResponseDto timewebVpsResponseDto) {
+        this.timewebId = timewebVpsResponseDto.getVpsTimewebId();
         this.name = name;
-        this.ipv4 = createVpsResponseDto.getIpv4();
-        this.ipv6 = createVpsResponseDto.getIpv6();
+        this.ipv4 = timewebVpsResponseDto.getIpv4();
+        this.ipv6 = timewebVpsResponseDto.getIpv6();
     }
 
 }

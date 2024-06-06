@@ -1,18 +1,19 @@
-package org.farpost.farpostapi2.dto.vps_dto;
+package org.farpost.farpostapi2.dto.timeweb_dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 
-import java.util.List;
-
-@Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class LocationDto {
+@Getter
+public class TimewebPresetDto {
 
+    private Integer id;
     private String location;
-    private String locationCode;
-    private List<String> availabilityZones;
+    private Integer cpu;
+    private Float cpuFrequency;
+    private Integer ram;
+    private Long disk;
+    private String discType;
 
 }

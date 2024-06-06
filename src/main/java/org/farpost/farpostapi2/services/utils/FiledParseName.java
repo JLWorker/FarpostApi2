@@ -9,7 +9,8 @@ public enum FiledParseName {
 
     SERVER_OS("servers_os"),
     SERVER_PRESETS("server_presets"),
-    LOCATIONS("locations");
+    LOCATIONS("locations"),
+    IMAGES("images");
 
     private final String value;
 

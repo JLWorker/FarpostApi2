@@ -8,6 +8,7 @@ import org.farpost.farpostapi2.dto.exceptions_dto.ValidationExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationResponseDto;
 import org.farpost.farpostapi2.exceptions.security.BadAuthSwaggerRequestException;
 import org.farpost.farpostapi2.exceptions.security.SwaggerAccessExpiredException;
+import org.farpost.farpostapi2.exceptions.ssh.SshConnectionException;
 import org.farpost.farpostapi2.exceptions.system.*;
 import org.farpost.farpostapi2.exceptions.users.InvalidUserCredentials;
 import org.hibernate.exception.ConstraintViolationException;
@@ -76,6 +77,13 @@ public class CustomControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public SimpleResponseExceptionDto elemAlreadyExistExceptionHandler(ElementAlreadyExist exception, HttpServletRequest request){
         return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage());
+    }
+
+    @ExceptionHandler(value = SshConnectionException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public SimpleResponseExceptionDto sshExceptionHandler(SshConnectionException exception, HttpServletRequest request){
+        return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.INTERNAL_SERVER_ERROR.name(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 exception.getMessage());
     }
 

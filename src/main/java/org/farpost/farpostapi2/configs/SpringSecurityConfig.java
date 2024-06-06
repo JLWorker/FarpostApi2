@@ -57,12 +57,5 @@ public class SpringSecurityConfig{
         return new BCryptPasswordEncoder(10);
     }
 
-//    @Bean
-//    public FilterRegistrationBean<SwaggerAuthFilter> swaggerAuthFilterFilterRegistrationBean(SwaggerAuthFilter swaggerAuthFilter) {
-//        FilterRegistrationBean<SwaggerAuthFilter> registration = new FilterRegistrationBean<>();
-//        registration.setFilter(swaggerAuthFilter);
-//        registration.setEnabled(false);
-//        return registration;
-//    }
 
 }

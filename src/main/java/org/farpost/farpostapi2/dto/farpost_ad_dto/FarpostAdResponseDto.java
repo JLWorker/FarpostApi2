@@ -1,7 +1,5 @@
-package org.farpost.farpostapi2.dto.ad_dto;
+package org.farpost.farpostapi2.dto.farpost_ad_dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -10,7 +8,7 @@ import lombok.Getter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @AllArgsConstructor
-public class AdResponseDto {
+public class FarpostAdResponseDto {
 
     private Integer adId;
 
