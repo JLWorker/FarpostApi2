@@ -1,5 +1,6 @@
 package org.farpost.farpostapi2.dto.bot_dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -16,11 +17,11 @@ import java.util.List;
 @Setter
 public class BotAdDto {
 
-    @NotNull(message = "Farpost id cannot be null")
-    private Integer farpostAdId;
-
     @NotNull(message = "Position cannot be null")
     private Integer position;
+    
+    @NotNull(message = "Farpost id cannot be null")
+    private Integer farpostId;
 
     @NotNull(message = "Limit cannot be null")
     private Integer limit;

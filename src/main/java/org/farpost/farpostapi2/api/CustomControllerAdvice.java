@@ -87,5 +87,12 @@ public class CustomControllerAdvice {
                 exception.getMessage());
     }
 
+    @ExceptionHandler(value = InvalidSystemOperationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public SimpleResponseExceptionDto operationExceptionHandler(InvalidSystemOperationException exception, HttpServletRequest request){
+        return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.INTERNAL_SERVER_ERROR.name(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                exception.getMessage());
+    }
+
 
 }

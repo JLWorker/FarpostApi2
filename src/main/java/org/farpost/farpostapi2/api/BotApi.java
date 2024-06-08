@@ -21,7 +21,6 @@ public class BotApi {
         botFacade.createNewBot(botDto);
     }
 
-    //протестировать!!!
     @PostMapping("/ad")
     public void createBotAd(@RequestBody @Valid BotAdDto botAdDto){
         botFacade.addAdInBot(botAdDto);

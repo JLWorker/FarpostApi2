@@ -17,8 +17,8 @@ public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer farpostAdId;
     private Integer position;
+    private Integer farpostId;
     @Column(name = "limit_pr")
     private Integer limit;
     private Integer step;
@@ -58,8 +58,7 @@ public class Ad {
         botAdDto.getUrls().forEach(el -> urlBuilder.append(el).append(", "));
         botAdDto.getWeekdayActive().forEach(el -> weekActiveBuilder.append(el).append(", "));
 
-        this.id = botAdDto.getBotId();
-        this.farpostAdId = botAdDto.getFarpostAdId();
+        this.farpostId = botAdDto.getFarpostId();
         this.position = botAdDto.getPosition();
         this.limit = botAdDto.getLimit();
         this.step = botAdDto.getStep();
