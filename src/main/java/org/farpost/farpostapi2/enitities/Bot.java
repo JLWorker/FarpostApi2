@@ -25,7 +25,7 @@ public class Bot {
     @JoinColumn(name = "vps_id", nullable = false)
     private Vps vps;
 
-    @OneToOne(mappedBy = "bot")
+    @OneToOne(mappedBy = "bot", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Ad ad;
 

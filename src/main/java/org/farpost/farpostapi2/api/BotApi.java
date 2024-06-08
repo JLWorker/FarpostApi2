@@ -1,9 +1,9 @@
 package org.farpost.farpostapi2.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.farpost.farpostapi2.dto.bot_dto.BotAdDto;
-import org.farpost.farpostapi2.dto.farpost_ad_dto.FarpostAdDto;
 import org.farpost.farpostapi2.dto.bot_dto.BotDto;
 import org.farpost.farpostapi2.facades.BotFacade;
 import org.farpost.farpostapi2.services.utils.SshCommands;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/bot")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Authentication")
 public class BotApi {
 
     private final BotFacade botFacade;
@@ -24,6 +25,11 @@ public class BotApi {
     @PostMapping("/ad")
     public void createBotAd(@RequestBody @Valid BotAdDto botAdDto){
         botFacade.addAdInBot(botAdDto);
+    }
+
+    @DeleteMapping("/{bot_id}")
+    public void deleteBot(@PathVariable(name = "bot_id") Integer botId){
+        botFacade.deleteBot(botId);
     }
 
     @GetMapping("/restart/{bot_id}")

@@ -20,4 +20,7 @@ public interface SshCommands {
     String STOP_BOT = "sudo systemctl stop {bot_name}.service";
     String RESTART_BOT = "sudo systemctl restart {bot_name}.service";
     String UPDATE_KERNAL = "sudo apt install linux-image-5.15.0-112-generic";
+    String CD_SYSTEM = "cd /etc/systemd/system";
+    String DELETE_SERVICE = "sudo rm {bot_name}.service";
+    String DELETE_JSON = "sudo rm /home/bot/jsons/{bot_name}.json";
 }

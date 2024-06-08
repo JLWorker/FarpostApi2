@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Component
@@ -55,21 +56,23 @@ public class ClientFacade {
                 client.setVps(vps);
             } else if (clientDto.getClientVpsDto() != null) {
                 if (!checkOnExistVps(clientDto.getClientVpsDto().getVpsName())) {
-                    TimewebVpsDto timewebVpsDto = new TimewebVpsDto(clientDto.getClientVpsDto());
-                    String response = restService.sendPostRequestSimple(TimewebRequests.CREATE_VPS, timewebVpsDto, null, headers ->
-                            headers.add("Authorization", timewebAccess), String.class);
+                    CompletableFuture.runAsync(() -> {
+                        TimewebVpsDto timewebVpsDto = new TimewebVpsDto(clientDto.getClientVpsDto());
+                        String response = restService.sendPostRequestSimple(TimewebRequests.CREATE_VPS, timewebVpsDto, null, headers ->
+                                headers.add("Authorization", timewebAccess), String.class);
 
-                    TimewebVpsResponseDto timewebVpsResponseDto = vpsParser.parseVpsResponse(response);
-                    Map<String, Object> variables = Map.of("timeweb_id", timewebVpsResponseDto.getVpsTimewebId());
-                    String ipv4Response = restService.sendPostRequestSimple(TimewebRequests.ADD_IPV4, new TimewebIpDto("ipv4"), variables, headers ->
-                            headers.add("Authorization", timewebAccess), String.class);
+                        TimewebVpsResponseDto timewebVpsResponseDto = vpsParser.parseVpsResponse(response);
+                        Map<String, Object> variables = Map.of("timeweb_id", timewebVpsResponseDto.getVpsTimewebId());
+                        String ipv4Response = restService.sendPostRequestSimple(TimewebRequests.ADD_IPV4, new TimewebIpDto("ipv4"), variables, headers ->
+                                headers.add("Authorization", timewebAccess), String.class);
 
-                    TimewebIpResponseDto timewebIpResponseDto = ipParser.parseIpResponse(ipv4Response);
-                    if (timewebIpResponseDto.getType().equals("ipv4"))
-                        timewebVpsResponseDto.setIpv4(timewebIpResponseDto.getIp());
-                    Vps vps = vpsRepository.save(new Vps(clientDto.getClientVpsDto().getVpsName(), timewebVpsResponseDto));
-                    client.setVps(vps);
-                    clientRepository.save(client);
+                        TimewebIpResponseDto timewebIpResponseDto = ipParser.parseIpResponse(ipv4Response);
+                        if (timewebIpResponseDto.getType().equals("ipv4"))
+                            timewebVpsResponseDto.setIpv4(timewebIpResponseDto.getIp());
+                        Vps vps = vpsRepository.save(new Vps(clientDto.getClientVpsDto().getVpsName(), timewebVpsResponseDto));
+                        client.setVps(vps);
+                        clientRepository.save(client);
+                    });
                 }
             } else
                 throw new BadRequestException("Without specifying the vps ID, you must pass data to create a vps, also parameter imageId should be without osId");

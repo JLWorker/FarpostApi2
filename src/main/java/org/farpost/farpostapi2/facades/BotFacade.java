@@ -10,6 +10,7 @@ import org.farpost.farpostapi2.enitities.Bot;
 import org.farpost.farpostapi2.enitities.Client;
 import org.farpost.farpostapi2.enitities.Vps;
 import org.farpost.farpostapi2.exceptions.system.ElementAlreadyExist;
+import org.farpost.farpostapi2.exceptions.system.ElementNotFoundException;
 import org.farpost.farpostapi2.facades.utils.FacadeUtils;
 import org.farpost.farpostapi2.facades.utils.RequestVariables;
 import org.farpost.farpostapi2.facades.utils.TimewebRequests;
@@ -28,6 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Component
@@ -52,13 +54,13 @@ public class BotFacade {
             String response = restService.sendGetRequestSimple(TimewebRequests.GET_SERVER, variables, headers -> headers.add(HttpHeaders.AUTHORIZATION, accessToken), String.class);
             TimewebVpsResponseDto timewebVpsResponseDto = vpsParser.parseVpsResponse(response);
             String jsonTouchCommand = UriComponentsBuilder.fromUriString(SshCommands.JSON_TOUCH).buildAndExpand(Map.of("bot_name", botDto.getName())).toString();
-            botRepository.save(new Bot(botDto, vps));
 
             if (!vps.getBots().isEmpty())
                 CompletableFuture.runAsync(() -> sshService.execCommands(timewebVpsResponseDto, List.of(SshCommands.ENTER_IN_BOT_USER, SshCommands.CD_JSONS, jsonTouchCommand)));
             else
                 CompletableFuture.runAsync(() -> sshService.execCommands(timewebVpsResponseDto, List.of(SshCommands.ENTER_IN_BOT_USER, SshCommands.JSON_MKDIR, jsonTouchCommand, SshCommands.CD_FARPOST, SshCommands.CHMOD_CONSOLE,
                         SshCommands.CHMOD_START, SshCommands.DEF_DISABLE_IPV6, SshCommands.IO_DISABLE_IPV6, SshCommands.ALL_DISABLE_IPV6, SshCommands.UPDATE, SshCommands.START_SH)));
+            botRepository.save(new Bot(botDto, vps));
         }
     }
 
@@ -86,7 +88,26 @@ public class BotFacade {
         TimewebVpsResponseDto timewebVpsResponseDto = vpsParser.parseVpsResponse(response);
         Map<String, Object> variablesBotInit = Map.of("bot_name", bot.getName());
         String commandFinish = UriComponentsBuilder.fromUriString(command).buildAndExpand(variablesBotInit).toString();
-        sshService.execCommands(timewebVpsResponseDto, List.of(SshCommands.ENTER_IN_BOT_USER, commandFinish));
+       CompletableFuture.runAsync(() -> sshService.execCommands(timewebVpsResponseDto, List.of(SshCommands.ENTER_IN_BOT_USER, commandFinish)));
+    }
+
+    @Transactional
+    public void deleteBot(Integer botId){
+        Bot bot = botRepository.findBotByIdAndLockAll(botId)
+                .orElseThrow(() -> new ElementNotFoundException(botId));
+        TimewebVpsResponseDto timewebVpsResponseDto = getVpsParams(bot.getVps().getTimewebId());
+        botRepository.delete(bot);
+        Map<String, Object> variableCommand = Map.of(RequestVariables.BOT_NAME.getName(), bot.getName());
+        String commandDeleteService = UriComponentsBuilder.fromUriString(SshCommands.DELETE_SERVICE).buildAndExpand(variableCommand).toString();
+        String commandStopService = UriComponentsBuilder.fromUriString(SshCommands.STOP_BOT).buildAndExpand(variableCommand).toString();
+        String commandDeleteJson = UriComponentsBuilder.fromUriString(SshCommands.DELETE_JSON).buildAndExpand(variableCommand).toString();
+        CompletableFuture.runAsync(() -> sshService.execCommands(timewebVpsResponseDto, List.of(SshCommands.ENTER_IN_BOT_USER, SshCommands.CD_SYSTEM, commandStopService, commandDeleteService, commandDeleteJson)));
+    }
+
+    private TimewebVpsResponseDto getVpsParams(Integer timewebId){
+        Map<String, Object> variables = Map.of(RequestVariables.TIMEWEB_ID.getName(), timewebId);
+        String response = restService.sendGetRequestSimple(TimewebRequests.GET_SERVER, variables, headers -> headers.add(HttpHeaders.AUTHORIZATION, accessToken), String.class);
+        return vpsParser.parseVpsResponse(response);
     }
 
         private boolean checkOnExistBot (String name){

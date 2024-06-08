@@ -39,7 +39,7 @@ public class VpsFacade {
         return vpsRepository.getAllVps().stream().map(VpsDto::new).toList();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional()
     public void updateVps(Integer vpsId, UpdateVpsDto updateVpsDto){
         Vps vps = facadeUtils.checkAvailability(vpsId, Vps.class, true);
         vps.setRing(updateVpsDto.getRing());
