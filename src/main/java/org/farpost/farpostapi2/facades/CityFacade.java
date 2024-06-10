@@ -34,8 +34,8 @@ public class CityFacade {
     }
 
     @Transactional
-    public City addCity(ViewDrCityDto viewDrCityDto){
-        return cityRepository.save(new City(viewDrCityDto));
+    public void addCity(ViewDrCityDto viewDrCityDto){
+         cityRepository.save(new City(viewDrCityDto));
     }
 
     @Transactional

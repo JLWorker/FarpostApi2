@@ -4,8 +4,8 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <property name="MAIN-LOG-FILE" value="src/main/resources/logs/farpost2.log"/>
-
+<!--    <property name="MAIN-LOG-FILE" value="src/main/resources/logs/farpost2.log"/>-->
+    <property name="MAIN-LOG-FILE" value="home/user2/api/logs/farpost2.log"/>
     <appender name="FARPOST-LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${MAIN-LOG-FILE}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">

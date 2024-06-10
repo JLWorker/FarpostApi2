@@ -23,22 +23,22 @@ public class ViewDirFacade {
         return viewDirsRepository.getAllViewDirs();
     }
     @Transactional
-    public ViewDir addViewDir(ViewDrCityDto viewDrCityDto){
-        return viewDirsRepository.save(new ViewDir(viewDrCityDto));
+    public void addViewDir(ViewDrCityDto viewDrCityDto){
+         viewDirsRepository.save(new ViewDir(viewDrCityDto));
     }
 
     @Transactional
-    public ViewDir deleteViewDir(Integer cityId){
-        facadeUtils.checkAvailability(cityId, City.class, true);
-        return viewDirsRepository.deleteViewDirById(cityId);
+    public void deleteViewDir(Integer viewDir){
+        facadeUtils.checkAvailability(viewDir, ViewDir.class, true);
+        viewDirsRepository.deleteViewDirById(viewDir);
     }
 
     @Transactional
-    public ViewDir updateViewDir(Integer viewDirId, ViewDrCityDto viewDrCityDto){
+    public void updateViewDir(Integer viewDirId, ViewDrCityDto viewDrCityDto){
         ViewDir viewDir = facadeUtils.checkAvailability(viewDirId, ViewDir.class, true);
         viewDir.setName(viewDrCityDto.getName());
         viewDir.setFarpostId(viewDrCityDto.getFarpostId());
-        return viewDirsRepository.save(viewDir);
+        viewDirsRepository.save(viewDir);
     }
 
 

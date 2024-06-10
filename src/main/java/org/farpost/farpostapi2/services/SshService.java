@@ -6,23 +6,16 @@ import com.jcraft.jsch.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.expectit.Expect;
-import net.sf.expectit.ExpectBuilder;
-import org.farpost.farpostapi2.dto.bot_dto.BotAdFileVersionDto;
+import org.farpost.farpostapi2.dto.bot_dto.BotAdFileDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebVpsResponseDto;
 import org.farpost.farpostapi2.exceptions.ssh.SshConnectionException;
 import org.farpost.farpostapi2.exceptions.system.InvalidSystemOperationException;
-import org.farpost.farpostapi2.services.utils.SshCommands;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -80,22 +73,27 @@ public class SshService {
         }
     }
 
-    public void sendAdFile(TimewebVpsResponseDto timewebVpsResponseDto, String botName, BotAdFileVersionDto botAdFileVersionDto){
+    @SneakyThrows
+    public void sendAdFile(TimewebVpsResponseDto timewebVpsResponseDto, String botName, List<BotAdFileDto> botAdFileDto, boolean override){
         JSch jSch = new JSch();
+        jSch.setKnownHosts(sshKeyScan(timewebVpsResponseDto.getIpv4()));
         Session session = null;
         try {
             session = jSch.getSession(username, timewebVpsResponseDto.getIpv4(), port);
             session.setPassword(timewebVpsResponseDto.getRootPassword());
-            session.setConfig("StrictHostKeyChecking", "no");
             session.setTimeout(3000);
             session.connect();
             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
             Map<String, Object> variables = Map.of("bot_name", botName);
             String pathToFile = UriComponentsBuilder.fromUriString(jsonFilePath).buildAndExpand(variables).toString();
-            String jsonAd = String.format("[%s]", objectMapper.writeValueAsString(botAdFileVersionDto));
-            InputStream inputStream = new ByteArrayInputStream(jsonAd.getBytes());
+            String jsonAds = objectMapper.writeValueAsString(botAdFileDto);
+            InputStream inputStream = new ByteArrayInputStream(jsonAds.getBytes());
             channelSftp.connect();
-            channelSftp.put(inputStream, pathToFile);
+            if (override) {
+                channelSftp.put(inputStream, pathToFile, ChannelSftp.OVERWRITE);
+            } else {
+                channelSftp.put(inputStream, pathToFile);
+            }
             channelSftp.disconnect();
         } catch (JSchException | SftpException e) {
             log.error(e.getMessage());

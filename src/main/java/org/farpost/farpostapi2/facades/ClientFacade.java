@@ -3,6 +3,7 @@ package org.farpost.farpostapi2.facades;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.farpost.farpostapi2.dto.client_dto.ClientDto;
+import org.farpost.farpostapi2.dto.client_dto.SuccessClientCreateDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebIpDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebIpResponseDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebVpsDto;
@@ -21,6 +22,7 @@ import org.farpost.farpostapi2.repositories.VpsRepository;
 import org.farpost.farpostapi2.services.IpParser;
 import org.farpost.farpostapi2.services.RestService;
 import org.farpost.farpostapi2.services.VpsParser;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,7 +41,6 @@ public class ClientFacade {
 
     private final ClientRepository clientRepository;
     private final FacadeUtils facadeUtils;
-    private final ClientTgRepository clientTgRepository;
     private final RestService restService;
     private final VpsParser vpsParser;
     private final VpsRepository vpsRepository;
@@ -48,14 +50,17 @@ public class ClientFacade {
     private String timewebAccess;
 
     @Transactional
-    public void addNewClient(ClientDto clientDto) {
+    public SuccessClientCreateDto addNewClient(ClientDto clientDto) {
         if(!checkClientOnExistBoobs(clientDto.getBoobs())) {
             Client client = new Client(clientDto);
             if (clientDto.getVpsId() != null) {
                 Vps vps = facadeUtils.checkAvailability(clientDto.getVpsId(), Vps.class, false);
                 client.setVps(vps);
-            } else if (clientDto.getClientVpsDto() != null) {
-                if (!checkOnExistVps(clientDto.getClientVpsDto().getVpsName())) {
+                clientRepository.save(client);
+                return new SuccessClientCreateDto("Client was create");
+            }
+            else if (clientDto.getClientVpsDto() != null) {
+                    checkOnExistVps(clientDto.getClientVpsDto().getVpsName());
                     CompletableFuture.runAsync(() -> {
                         TimewebVpsDto timewebVpsDto = new TimewebVpsDto(clientDto.getClientVpsDto());
                         String response = restService.sendPostRequestSimple(TimewebRequests.CREATE_VPS, timewebVpsDto, null, headers ->
@@ -74,34 +79,11 @@ public class ClientFacade {
                         clientRepository.save(client);
                     });
                 }
-            } else
-                throw new BadRequestException("Without specifying the vps ID, you must pass data to create a vps, also parameter imageId should be without osId");
-        }
+                return new SuccessClientCreateDto();
+            }
+            else
+                throw new BadRequestException("Without specifying the vps id you must pass data to create a vps");
     }
-
-    private boolean checkOnExistVps(String name){
-         if(vpsRepository.findByName(name).isPresent())
-             throw new ElementAlreadyExist(String.format("Vps with name %s already exist", name));
-         else
-             return false;
-    }
-
-    private boolean checkClientOnExistBoobs(String boobs){
-        if(clientRepository.findClientByBoobs(boobs).isPresent())
-            throw new ElementAlreadyExist(String.format("Client with boobs %s already exist", boobs));
-        else
-            return false;
-    }
-
-    //желательно поправить параллелизм
-    @Async
-    public void saveCreatedVps(ClientDto clientDto, Client client, String response){
-            TimewebVpsResponseDto timewebVpsResponseDto = vpsParser.parseVpsResponse(response);
-            Vps vps = vpsRepository.save(new Vps(clientDto.getClientVpsDto().getVpsName(), timewebVpsResponseDto));
-            client.setVps(vps);
-            clientRepository.save(client);
-    }
-
 
     @Transactional(readOnly = true)
     public List<Client> getClients(){
@@ -118,25 +100,6 @@ public class ClientFacade {
             client.setVps(vps);
         }
         clientRepository.save(client);
-//        if(!clientDto.getListTgId().isEmpty()){
-//            Map<Integer, ClientTg> clientTgMap = client.getClientTgs()
-//                    .stream().collect(Collectors.toMap(ClientTg::getTgId, value -> value));
-//            clientDto.getListTgId().forEach(el -> {
-//                ClientTg clientTg = new ClientTg(el);
-//                if (clientTgMap.containsKey(clientTg.getTgId())){
-//                    ClientTg findPresentClient = clientTgMap.get(clientTg.getTgId());
-//                    if (!findPresentClient.equals(clientTg)) {
-//                        findPresentClient.setUsername(clientTg.getUsername());
-//                        findPresentClient.setTgId(clientTg.getTgId());
-//                        clientTgRepository.save(clientTg);
-//                    }
-//                }
-//                else {
-//                    clientTg.setClient(client);
-//                    clientTgRepository.save(clientTg);
-//                }
-//            });
-//        }
     }
 
     @Transactional
@@ -149,6 +112,20 @@ public class ClientFacade {
         return clientRepository.getClientWithTgById(clientId).orElseThrow(() ->
                 new ElementNotFoundException(clientId)
         );
+    }
+
+    private boolean checkOnExistVps(String name){
+        if(vpsRepository.findByName(name).isPresent())
+            throw new ElementAlreadyExist(String.format("Vps with name %s already exist", name));
+        else
+            return false;
+    }
+
+    private boolean checkClientOnExistBoobs(String boobs){
+        if(clientRepository.findClientByBoobs(boobs).isPresent())
+            throw new ElementAlreadyExist(String.format("Client with boobs %s already exist", boobs));
+        else
+            return false;
     }
 
 }

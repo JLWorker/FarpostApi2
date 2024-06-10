@@ -29,27 +29,29 @@ private final RestClient restClient = RestClient.builder().requestFactory(new Ht
     private final RestResponseErrorHandler restResponseErrorHandler;
 
     public <T> T sendGetRequestSimple(String requestUri, Map<String, Object> variables, Consumer<HttpHeaders> headersConsumer, Class<T> responseType){
-        URI uri;
-        if (variables != null)
-            uri = UriComponentsBuilder.fromHttpUrl(requestUri).buildAndExpand(variables).toUri();
-        else
-            uri = URI.create(requestUri);
+        URI buildRequest = getHttpUri(variables, requestUri);
         return restClient.get()
-                .uri(uri)
+                .uri(buildRequest)
                 .headers(headersConsumer)
                 .retrieve()
                 .onStatus(restResponseErrorHandler)
                 .body(responseType);
     }
 
+    public void sendGetRequestSimpleWithoutAnswer(String requestUri, Map<String, Object> variables, Consumer<HttpHeaders> headersConsumer){
+        URI buildRequest = getHttpUri(variables, requestUri);
+         restClient.get()
+                .uri(buildRequest)
+                .headers(headersConsumer)
+                .retrieve()
+                .onStatus(restResponseErrorHandler)
+                .toBodilessEntity();
+    }
+
     public <T, R> T sendPostRequestSimple(String requestUri, R requestBody,  Map<String, Object> variables, Consumer<HttpHeaders> headersConsumer, Class<T> responseType){
-        URI uri;
-        if (variables != null)
-            uri = UriComponentsBuilder.fromHttpUrl(requestUri).buildAndExpand(variables).toUri();
-        else
-            uri = URI.create(requestUri);
+        URI buildRequest = getHttpUri(variables, requestUri);
         return restClient.post()
-                .uri(uri)
+                .uri(buildRequest)
                 .headers(headersConsumer)
                 .body(requestBody)
                 .retrieve()
@@ -57,5 +59,21 @@ private final RestClient restClient = RestClient.builder().requestFactory(new Ht
                 .body(responseType);
     }
 
+    public void sendDeleteRequestSimple(String requestUri, Map<String, Object> variables, Consumer<HttpHeaders> headersConsumer){
+        URI buildRequest = getHttpUri(variables, requestUri);
+        restClient.delete()
+                .uri(buildRequest)
+                .headers(headersConsumer)
+                .retrieve()
+                .onStatus(restResponseErrorHandler)
+                .toBodilessEntity();
+    }
+
+    private URI getHttpUri(Map<String, Object> variables, String requestUri){
+        if (variables != null)
+            return UriComponentsBuilder.fromHttpUrl(requestUri).buildAndExpand(variables).toUri();
+        else
+            return URI.create(requestUri);
+    }
 
 }

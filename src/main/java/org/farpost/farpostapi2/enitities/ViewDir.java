@@ -20,7 +20,7 @@ public class ViewDir {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(name = "farpost_id", nullable = false)
+    @Column(name = "farpost_id", nullable = false, unique = true)
     private Integer farpostId;
 
     public ViewDir(String name, Integer farpostId) {

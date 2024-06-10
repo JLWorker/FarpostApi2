@@ -19,7 +19,8 @@ public interface CityRepository extends CrudRepository<City, Integer> {
     @Query(value = "SELECT city FROM City city")
     List<City> getAllCities();
 
-    @Query(value = "DELETE FROM cities WHERE id =?1 RETURNING *", nativeQuery = true)
-    City deleteCityById(Integer cityId);
+    @Modifying
+    @Query(value = "DELETE FROM cities WHERE id =?1", nativeQuery = true)
+    void deleteCityById(Integer cityId);
 
 }

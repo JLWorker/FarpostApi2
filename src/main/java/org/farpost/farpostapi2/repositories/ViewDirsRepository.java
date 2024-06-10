@@ -2,6 +2,7 @@ package org.farpost.farpostapi2.repositories;
 
 import org.farpost.farpostapi2.enitities.City;
 import org.farpost.farpostapi2.enitities.ViewDir;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,8 @@ public interface ViewDirsRepository extends CrudRepository<ViewDir, Integer> {
     @Query(value = "SELECT viewDir FROM ViewDir viewDir")
     List<ViewDir> getAllViewDirs();
 
-    @Query(value = "DELETE FROM view_dirs WHERE id =?1 RETURNING *", nativeQuery = true)
-    ViewDir deleteViewDirById(Integer viewDirId);
+    @Modifying
+    @Query(value = "DELETE FROM view_dirs WHERE id =?1", nativeQuery = true)
+    void deleteViewDirById(Integer viewDirId);
 
 }

@@ -14,6 +14,7 @@ import lombok.Getter;
 public class ClientTgDto {
 
     @NotNull(message = "Telegram id cannot be null")
+    @Schema(example = "12")
     private Integer tgId;
 
     @Pattern(regexp = "^.*\\B@(?=\\w{5,32}\\b)[a-zA-Z0-9]+(?:_[a-zA-Z0-9]+)*.{2,50}$",

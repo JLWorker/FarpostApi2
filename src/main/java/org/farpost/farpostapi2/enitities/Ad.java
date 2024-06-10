@@ -46,7 +46,7 @@ public class Ad {
     @JsonBackReference
     private Client client;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "bot_id")
     @JsonBackReference
     private Bot bot;
@@ -66,7 +66,7 @@ public class Ad {
         this.activityTimeStartMinit = botAdDto.getActivityTimeStartMinit();
         this.activityTimeStopHour = botAdDto.getActivityTimeStopHour();
         this.activityTimeStopMinit = botAdDto.getActivityTimeStopMinit();
-        this.urls = urlBuilder.substring(0, urlBuilder.length()-3);
+        this.urls = urlBuilder.substring(0, urlBuilder.length()-2).trim();
         this.falseAd = botAdDto.getFalseAd();
         this.isCashback = botAdDto.getIsCashback();
         this.isOnHoldPosition = botAdDto.getIsOnHoldPosition();
@@ -78,7 +78,41 @@ public class Ad {
         this.minPrice = botAdDto.getMinPrice();
         this.isGrafana = botAdDto.getIsGrafana();
         this.requestSleep = botAdDto.getRequestSleep();
-        this.weekdayActive = weekActiveBuilder.substring(0, weekActiveBuilder.length()-3);
+        this.weekdayActive = weekActiveBuilder.substring(0, weekActiveBuilder.length()-2).trim();
+        this.isMain = botAdDto.getIsMain();
+        this.client = client;
+        this.bot = bot;
+    }
+
+    public Ad(BotAdDto botAdDto, Client client, Bot bot, Integer oldId){
+
+        StringBuilder urlBuilder = new StringBuilder();
+        StringBuilder weekActiveBuilder = new StringBuilder();
+        botAdDto.getUrls().forEach(el -> urlBuilder.append(el).append(", "));
+        botAdDto.getWeekdayActive().forEach(el -> weekActiveBuilder.append(el).append(", "));
+
+        this.id = oldId;
+        this.farpostId = botAdDto.getFarpostId();
+        this.position = botAdDto.getPosition();
+        this.limit = botAdDto.getLimit();
+        this.step = botAdDto.getStep();
+        this.activityTimeStartHour = botAdDto.getActivityTimeStartHour();
+        this.activityTimeStartMinit = botAdDto.getActivityTimeStartMinit();
+        this.activityTimeStopHour = botAdDto.getActivityTimeStopHour();
+        this.activityTimeStopMinit = botAdDto.getActivityTimeStopMinit();
+        this.urls = urlBuilder.substring(0, urlBuilder.length()-2).trim();
+        this.falseAd = botAdDto.getFalseAd();
+        this.isCashback = botAdDto.getIsCashback();
+        this.isOnHoldPosition = botAdDto.getIsOnHoldPosition();
+        this.overPrice = botAdDto.getOverPrice();
+        this.decisionMakingTime = botAdDto.getDecisionMakingTime();
+        this.minitOfNotPosition = botAdDto.getMinitOfNotPosition();
+        this.timeDown = botAdDto.getTimeDown();
+        this.limitState = botAdDto.getLimitState();
+        this.minPrice = botAdDto.getMinPrice();
+        this.isGrafana = botAdDto.getIsGrafana();
+        this.requestSleep = botAdDto.getRequestSleep();
+        this.weekdayActive = weekActiveBuilder.substring(0, weekActiveBuilder.length()-2).trim();
         this.isMain = botAdDto.getIsMain();
         this.client = client;
         this.bot = bot;

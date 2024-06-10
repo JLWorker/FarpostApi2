@@ -45,8 +45,7 @@ public class SpringSecurityConfig{
                 .authorizeHttpRequests(managerRequestRegistry ->
                     managerRequestRegistry
                       .requestMatchers(permitAllMatchers.toArray(new String[0])).permitAll()
-                            .anyRequest().permitAll())
-//                      .anyRequest().hasRole("ADMIN"))
+                      .anyRequest().hasRole("ADMIN"))
                 .addFilterBefore(new SwaggerAuthFilter(jwtService, permitAllMatchers), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new CustomExceptionTranslationFilter(new ObjectMapper()), SwaggerAuthFilter.class);
         return httpSecurity.build();

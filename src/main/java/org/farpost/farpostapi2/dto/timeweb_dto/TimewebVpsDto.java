@@ -17,7 +17,7 @@ public class TimewebVpsDto {
     private Integer presetId;
     private String imageId;
     @JsonProperty(value = "is_ddos_guard")
-    private boolean isDdosGuard;
+    private Boolean isDdosGuard;
     private String name;
     private String avatarId;
     private String comment;
@@ -26,7 +26,7 @@ public class TimewebVpsDto {
 
     public TimewebVpsDto(ClientVpsDto clientVpsDto){
         this.name = clientVpsDto.getVpsName();
-        this.isDdosGuard = clientVpsDto.isDdosGuard();
+        this.isDdosGuard = clientVpsDto.getIsDdosGuard();
         this.presetId = clientVpsDto.getPresetId();
         this.availabilityZone = clientVpsDto.getAvailabilityZone();
         this.imageId = clientVpsDto.getImageId();

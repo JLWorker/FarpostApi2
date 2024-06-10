@@ -1,11 +1,14 @@
 package org.farpost.farpostapi2.enitities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.farpost.farpostapi2.dto.bot_dto.BotDto;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,11 +26,12 @@ public class Bot {
 
     @ManyToOne
     @JoinColumn(name = "vps_id", nullable = false)
+    @JsonBackReference
     private Vps vps;
 
-    @OneToOne(mappedBy = "bot", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bot", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Ad ad;
+    private List<Ad> ad;
 
     public Bot(BotDto botDto, Vps vps){
         this.name = botDto.getName();

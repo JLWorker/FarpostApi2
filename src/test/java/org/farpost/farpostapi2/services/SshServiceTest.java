@@ -1,11 +1,9 @@
 package org.farpost.farpostapi2.services;
 
-import org.farpost.farpostapi2.dto.bot_dto.BotAdFileVersionDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebVpsResponseDto;
 import org.farpost.farpostapi2.facades.utils.RequestVariables;
 import org.farpost.farpostapi2.facades.utils.TimewebRequests;
 import org.farpost.farpostapi2.services.utils.SshCommands;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

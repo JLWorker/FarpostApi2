@@ -15,9 +15,7 @@ public class FarpostAdDto {
 
     @NotNull(message = "Ad id cannot be null")
     private Integer adId;
-
     private Integer viewDirId;
-
     private Integer price;
 
 

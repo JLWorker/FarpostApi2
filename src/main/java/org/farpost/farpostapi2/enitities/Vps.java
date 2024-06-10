@@ -35,11 +35,14 @@ public class Vps {
     @Column(length = 300, unique = true)
     private String ring;
 
+    private Boolean isActive;
+
     @OneToMany(mappedBy = "vps", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Client> clients;
 
     @OneToMany(mappedBy = "vps", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Bot> bots;
 
     public Vps(String name, TimewebVpsResponseDto timewebVpsResponseDto) {
@@ -47,6 +50,7 @@ public class Vps {
         this.name = name;
         this.ipv4 = timewebVpsResponseDto.getIpv4();
         this.ipv6 = timewebVpsResponseDto.getIpv6();
+        this.isActive = false;
     }
 
 }

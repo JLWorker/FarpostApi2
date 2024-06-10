@@ -5,13 +5,16 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.farpost.farpostapi2.enitities.Ad;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @NoArgsConstructor
-public class BotAdFileVersionDto {
+public class BotAdFileDto {
 
     @JsonProperty("_id")
     private Integer farpostId;
@@ -36,7 +39,7 @@ public class BotAdFileVersionDto {
     private Boolean isMain;
     private String boobs;
 
-    public BotAdFileVersionDto(BotAdDto botAdDto, String boobs){
+    public BotAdFileDto(BotAdDto botAdDto, String boobs){
         this.farpostId = botAdDto.getFarpostId();
         this.position = botAdDto.getPosition();
         this.limit = botAdDto.getLimit();
@@ -60,7 +63,34 @@ public class BotAdFileVersionDto {
         this.boobs = boobs;
     }
 
-    public BotAdFileVersionDto(Integer position, Integer limit, Integer step, List<String> url, Integer falseAd, Boolean isCashback, Boolean isOnHoldPosition, Integer overPrice, Integer decisionMakingTime, Integer minitOfNotPosition, Integer timeDown, Integer limitState, Integer minPrice, Boolean isGrafana, Integer requestSleep, List<Integer> weekdayActive, List<List<Integer>> activity_time, Boolean isMain, Integer botId, Integer clientId, Integer farpostId, String boobs) {
+    public BotAdFileDto(Ad ad){
+
+        List<String> urls = Arrays.stream(ad.getUrls().split(",")).map(String::trim).toList();
+        List<Integer> weekdayActive = Arrays.stream(ad.getWeekdayActive().split(",")).map(el -> Integer.parseInt(el.trim())).toList();
+        this.farpostId = ad.getFarpostId();
+        this.position = ad.getPosition();
+        this.limit = ad.getLimit();
+        this.step = ad.getStep();
+        this.activity_time = List.of(List.of(ad.getActivityTimeStartHour(), ad.getActivityTimeStartMinit()),
+                List.of(ad.getActivityTimeStopHour(), ad.getActivityTimeStopMinit()));
+        this.url = urls;
+        this.falseAd = ad.getFalseAd();
+        this.isCashback = ad.getIsCashback();
+        this.isOnHoldPosition = ad.getIsOnHoldPosition();
+        this.overPrice = ad.getOverPrice();
+        this.decisionMakingTime = ad.getDecisionMakingTime();
+        this.minitOfNotPosition = ad.getMinitOfNotPosition();
+        this.timeDown = ad.getTimeDown();
+        this.limitState = ad.getLimitState();
+        this.minPrice = ad.getMinPrice();
+        this.isGrafana = ad.getIsGrafana();
+        this.requestSleep = ad.getRequestSleep();
+        this.weekdayActive = weekdayActive;
+        this.isMain = ad.getIsMain();
+        this.boobs = ad.getClient().getBoobs();
+    }
+
+    public BotAdFileDto(Integer position, Integer limit, Integer step, List<String> url, Integer falseAd, Boolean isCashback, Boolean isOnHoldPosition, Integer overPrice, Integer decisionMakingTime, Integer minitOfNotPosition, Integer timeDown, Integer limitState, Integer minPrice, Boolean isGrafana, Integer requestSleep, List<Integer> weekdayActive, List<List<Integer>> activity_time, Boolean isMain, Integer botId, Integer clientId, Integer farpostId, String boobs) {
         this.farpostId =
         this.position = position;
         this.limit = limit;
@@ -81,29 +111,6 @@ public class BotAdFileVersionDto {
         this.activity_time = activity_time;
         this.isMain = isMain;
         this.boobs = boobs;
-    }
-
-    public BotAdFileVersionDto(String boobs){
-        this.boobs = boobs;
-        this.position = 0;
-        this.limit = 0;
-        this.step = 0;
-        this.farpostId = 0;
-        this.url = List.of("asd");
-        this.falseAd = 0;
-        this.isCashback = false;
-        this.isOnHoldPosition = false;
-        this.overPrice = 0;
-        this.decisionMakingTime = 0;
-        this.minitOfNotPosition = 0;
-        this.timeDown = 0;
-        this.limitState = 0;
-        this.minPrice = 0;
-        this.isGrafana = false;
-        this.requestSleep = 0;
-        this.weekdayActive = List.of(0);
-        this.isMain = false;
-        this.activity_time = List.of(List.of(1,2), List.of(3,4));
     }
 
 }

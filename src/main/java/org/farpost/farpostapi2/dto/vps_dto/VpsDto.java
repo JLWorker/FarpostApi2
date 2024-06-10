@@ -27,14 +27,19 @@ public class VpsDto {
 
     private Integer id;
 
+    @Schema(example = "24234")
     private Integer timewebId;
 
+    @Schema(example = "Test1")
     private String name;
 
+    @Schema(example = "32.23.22.12")
     private String ipv4;
 
+    @Schema(example = "2a03:6f01:1:2::8162")
     private String ipv6;
 
+    @Schema(example = "sadadshf455...")
     private String ring;
 
     private List<ShortClientDto> clients;

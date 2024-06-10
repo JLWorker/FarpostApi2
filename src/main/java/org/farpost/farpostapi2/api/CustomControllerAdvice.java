@@ -6,6 +6,7 @@ import org.farpost.farpostapi2.dto.exceptions_dto.RemoteRequestExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.SimpleResponseExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationExceptionDto;
 import org.farpost.farpostapi2.dto.exceptions_dto.ValidationResponseDto;
+import org.farpost.farpostapi2.exceptions.farpost.BoobsInvalidException;
 import org.farpost.farpostapi2.exceptions.security.BadAuthSwaggerRequestException;
 import org.farpost.farpostapi2.exceptions.security.SwaggerAccessExpiredException;
 import org.farpost.farpostapi2.exceptions.ssh.SshConnectionException;
@@ -91,6 +92,13 @@ public class CustomControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public SimpleResponseExceptionDto operationExceptionHandler(InvalidSystemOperationException exception, HttpServletRequest request){
         return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.INTERNAL_SERVER_ERROR.name(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                exception.getMessage());
+    }
+
+    @ExceptionHandler(value = BoobsInvalidException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public SimpleResponseExceptionDto boobsExceptionHandler(BoobsInvalidException exception, HttpServletRequest request){
+        return new SimpleResponseExceptionDto(request.getServletPath(), HttpStatus.UNAUTHORIZED.name(), HttpStatus.UNAUTHORIZED.value(),
                 exception.getMessage());
     }
 

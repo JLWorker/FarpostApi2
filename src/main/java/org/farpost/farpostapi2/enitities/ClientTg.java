@@ -1,6 +1,7 @@
 package org.farpost.farpostapi2.enitities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,17 @@ public class ClientTg {
     private Integer id;
 
     @Column(name = "tg_id", nullable = false, unique = true)
+    @Schema(example = "12")
     private Integer tgId;
 
     @Column(length = 150, nullable = false)
+    @Schema(example = "@Tolik234")
     private String username;
 
     @ManyToOne()
     @JoinColumn(name = "client_id", nullable = false)
     @JsonBackReference
+    @Schema(example = "12")
     private Client client;
 
     public ClientTg(ClientTgDto clientTgDto) {

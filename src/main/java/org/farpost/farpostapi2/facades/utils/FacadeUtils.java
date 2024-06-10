@@ -5,8 +5,10 @@ import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.farpost.farpostapi2.enitities.Client;
 import org.farpost.farpostapi2.enitities.User;
+import org.farpost.farpostapi2.exceptions.system.ElementAlreadyExist;
 import org.farpost.farpostapi2.exceptions.system.ElementNotFoundException;
 import org.farpost.farpostapi2.repositories.ClientRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

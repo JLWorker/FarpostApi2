@@ -2,6 +2,7 @@ package org.farpost.farpostapi2.services.utils;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.farpost.farpostapi2.exceptions.farpost.BoobsInvalidException;
 import org.farpost.farpostapi2.exceptions.system.RemoteInvalidRequestException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
@@ -24,13 +25,21 @@ public class RestResponseErrorHandler implements ResponseErrorHandler {
     public void handleError(ClientHttpResponse response) throws IOException {
 
     }
+
     @Override
     @SneakyThrows
     public void handleError(URI uri, HttpMethod method, ClientHttpResponse response) {
-        log.error(String.format("Problem executing a remote request by uri %s", uri.getRawPath()));
-        String responseBody = new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
-        throw new RemoteInvalidRequestException(String.format("Problem executing a remote request, message - %s", responseBody), uri.getPath(), response.getStatusCode().value(),
-                method.name());
+        String resp = new String(response.getBody().readAllBytes());
+        log.info(resp.substring(0, 300));
+        if (response.getStatusCode().value() == 401) {
+            throw new BoobsInvalidException();
+        }
+        else if (response.getStatusCode().value() == 403) {
+            return;
+        }
+        else
+            throw new RemoteInvalidRequestException(String.format("Problem executing a remote request, message - %s", resp), uri.getPath(), response.getStatusCode().value(),
+                    method.name());
     }
 
 }

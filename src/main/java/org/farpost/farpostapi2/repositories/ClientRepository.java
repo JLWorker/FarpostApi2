@@ -22,8 +22,8 @@ public interface ClientRepository extends CrudRepository<Client, Integer> {
 
     Client getClientById(Integer id);
 
-    @Query("SELECT client from Client client JOIN ClientTg clientTg ON client.id=clientTg.client.id WHERE client.id = ?1")
     @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT client from Client client LEFT JOIN client.clientTgs clientTgs WHERE client.id = ?1")
     Optional<Client> getClientWithTgById(Integer id);
 
     Optional<Client> findClientByBoobs(String boobs);
