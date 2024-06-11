@@ -1,12 +1,8 @@
 package org.farpost.farpostapi2.dto.bot_dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,7 +13,7 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @Setter
-public class BotAdDto {
+public class BotUpdateAdDto {
 
     @NotNull(message = "Position cannot be null")
     private Integer position;
@@ -87,11 +83,5 @@ public class BotAdDto {
 
     @NotNull(message = "Is main cannot be null")
     private Boolean isMain;
-
-    @NotNull(message = "Bot id cannot be null")
-    private Integer botId;
-
-    @NotNull(message = "Client id cannot be null")
-    private Integer clientId;
 
 }

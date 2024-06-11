@@ -13,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
-import org.farpost.farpostapi2.dto.bot_dto.BotAdDto;
-import org.farpost.farpostapi2.dto.bot_dto.BotDto;
-import org.farpost.farpostapi2.dto.bot_dto.SuccessAdCreateDto;
-import org.farpost.farpostapi2.dto.bot_dto.SuccessBotCreateDto;
+import org.farpost.farpostapi2.dto.bot_dto.*;
 import org.farpost.farpostapi2.dto.farpost_ad_dto.FarpostAdResponseDto;
 import org.farpost.farpostapi2.enitities.Bot;
 import org.farpost.farpostapi2.facades.BotFacade;
@@ -57,7 +54,7 @@ public class BotApi {
             @ApiResponse(responseCode = "200", description = "Success operation", content = @Content(schema = @Schema(implementation = SuccessAdCreateDto.class)))
     })
     @PostMapping("/ad")
-    public SuccessAdCreateDto createBotAd(@RequestBody @Valid @JsonView(BotAdDto.NewAd.class) @NotEmpty(message = "Bot ads cannot be empty") List<BotAdDto> botAdDto){
+    public SuccessAdCreateDto createBotAd(@RequestBody @Valid @NotEmpty(message = "Bot ads cannot be empty") List<BotAdDto> botAdDto){
         return botFacade.addAdInBot(botAdDto);
     }
 
@@ -70,7 +67,7 @@ public class BotApi {
             @ApiResponse(responseCode = "200", description = "Success operation", content = @Content())
     })
     @PutMapping("/ad/{ad_id}")
-    public void updateBotAd(@RequestBody @Valid @JsonView(BotAdDto.UpdateAd.class) BotAdDto botAdDto, @PathVariable(name = "ad_id") Integer adId) {
+    public void updateBotAd(@RequestBody @Valid BotUpdateAdDto botAdDto, @PathVariable(name = "ad_id") Integer adId) {
         botFacade.updateAdInfo(botAdDto, adId);
     }
 

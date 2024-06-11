@@ -86,7 +86,7 @@ public class SshService {
             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
             Map<String, Object> variables = Map.of("bot_name", botName);
             String pathToFile = UriComponentsBuilder.fromUriString(jsonFilePath).buildAndExpand(variables).toString();
-            String jsonAds = objectMapper.writeValueAsString(botAdFileDto);
+            String jsonAds = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(botAdFileDto);
             InputStream inputStream = new ByteArrayInputStream(jsonAds.getBytes());
             channelSftp.connect();
             if (override) {

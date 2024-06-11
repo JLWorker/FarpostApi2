@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.farpost.farpostapi2.dto.client_dto.ClientDto;
 import org.farpost.farpostapi2.dto.client_dto.SuccessClientCreateDto;
+import org.farpost.farpostapi2.dto.client_dto.UpdateClientDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebIpDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebIpResponseDto;
 import org.farpost.farpostapi2.dto.timeweb_dto.TimewebVpsDto;
@@ -91,7 +92,7 @@ public class ClientFacade {
     }
 
     @Transactional
-    public void updateClient(Integer clientId, ClientDto clientDto){
+    public void updateClient(Integer clientId, UpdateClientDto clientDto){
         Client client = getBlockForClientCascade(clientId);
         client.setName(clientDto.getName());
         client.setBoobs(clientDto.getBoobs());

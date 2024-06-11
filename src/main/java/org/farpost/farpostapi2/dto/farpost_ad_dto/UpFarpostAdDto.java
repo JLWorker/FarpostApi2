@@ -11,11 +11,13 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Setter
 @Getter
-public class FarpostAdDto {
+public class UpFarpostAdDto {
 
     @NotNull(message = "Ad id cannot be null")
     private Integer adId;
+    @NotNull(message = "View dir cannot be null")
     private Integer viewDirId;
+    @NotNull(message = "Price cannot be null")
     private Integer price;
 
 

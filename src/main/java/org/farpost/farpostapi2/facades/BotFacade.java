@@ -98,7 +98,7 @@ public class BotFacade {
     }
 
     @Transactional
-    public void updateAdInfo(BotAdDto botAd, Integer adId) {
+    public void updateAdInfo(BotUpdateAdDto botAd, Integer adId) {
         Ad oldAd = facadeUtils.checkAvailability(adId, Ad.class, true);
         Ad ad = new Ad(botAd, oldAd.getClient(), oldAd.getBot(), oldAd.getId());
         adRepository.save(ad);

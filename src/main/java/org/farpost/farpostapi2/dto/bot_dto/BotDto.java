@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 public class BotDto {
 
-    @Pattern(regexp = "^[a-zA-Z_\\-\\d]{3,50}$")
+    @Pattern(regexp = "^[a-zA-Z\\d]{3,50}$")
     @Schema(example = "bot1")
     private String name;
 

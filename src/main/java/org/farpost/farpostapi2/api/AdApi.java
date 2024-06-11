@@ -3,8 +3,6 @@ package org.farpost.farpostapi2.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.headers.Header;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,10 +11,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.farpost.farpostapi2.dto.exceptions_dto.SimpleResponseExceptionDto;
-import org.farpost.farpostapi2.dto.farpost_ad_dto.FarpostAdDto;
+import org.farpost.farpostapi2.dto.farpost_ad_dto.UnpinFarpostAdDto;
+import org.farpost.farpostapi2.dto.farpost_ad_dto.UpFarpostAdDto;
 import org.farpost.farpostapi2.dto.farpost_ad_dto.FarpostAdResponseDto;
-import org.farpost.farpostapi2.exceptions.security.SwaggerAccessExpiredException;
 import org.farpost.farpostapi2.facades.AdFacade;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +36,8 @@ public class AdApi {
             @ApiResponse(responseCode = "200", description = "Success operation", content = @Content(schema = @Schema(implementation = FarpostAdResponseDto.class)))
     })
     @PostMapping("/up/{client_id}")
-    public FarpostAdResponseDto putUpAd(@PathVariable(value = "client_id") Integer clientId, @RequestBody @Valid FarpostAdDto farpostAdDto){
-       return adFacade.putUpAd(clientId, farpostAdDto);
+    public FarpostAdResponseDto putUpAd(@PathVariable(value = "client_id") Integer clientId, @RequestBody @Valid UpFarpostAdDto upFarpostAdDto){
+       return adFacade.putUpAd(clientId, upFarpostAdDto);
     }
 
     @Operation(summary = "Put unpin farpost ad")
@@ -53,8 +50,8 @@ public class AdApi {
             @ApiResponse(responseCode = "200", description = "Success operation", content = @Content(schema = @Schema(implementation = FarpostAdResponseDto.class)))
     })
     @PostMapping("/unpin/{client_id}")
-    public FarpostAdResponseDto putUnpinAd(@PathVariable(value = "client_id") Integer clientId, @RequestBody @Valid FarpostAdDto farpostAdDto){
-        return adFacade.putUnpinAd(clientId, farpostAdDto);
+    public FarpostAdResponseDto putUnpinAd(@PathVariable(value = "client_id") Integer clientId, @RequestBody @Valid UnpinFarpostAdDto unpinFarpostAdDto){
+        return adFacade.putUnpinAd(clientId, unpinFarpostAdDto);
     }
 
 
